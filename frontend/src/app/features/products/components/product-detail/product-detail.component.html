@@ -1,0 +1,106 @@
+<div class="product-detail-container" *ngIf="!loading; else loadingTemplate">
+    <button class="back-button" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Voltar
+    </button>
+
+    <div class="product-detail" *ngIf="product">
+        <div class="product-images">
+            <div class="image-gallery">
+                <div class="thumbnails">
+                    <img
+                            *ngFor="let image of product.images; let i = index"
+                            [src]="image"
+                            [alt]="product.name + ' - Imagem ' + (i + 1)"
+                            (click)="selectImage(i)"
+                            [class.active]="selectedImage === i"
+                            class="thumbnail">
+                </div>
+                <div class="main-image">
+                    <img
+                            [src]="product.images[selectedImage] || 'assets/images/no-image.png'"
+                            [alt]="product.name">
+                </div>
+            </div>
+        </div>
+
+        <div class="product-info">
+            <span class="brand">{{ product.brand }}</span>
+            <h1>{{ product.name }}</h1>
+
+            <div class="price-container">
+        <span class="original-price" *ngIf="product.originalPrice">
+          {{ product.originalPrice | currency:'BRL' }}
+        </span>
+                <span class="current-price">
+          {{ product.price | currency:'BRL' }}
+        </span>
+                <span class="discount" *ngIf="product.hasDiscount">
+          {{ product.discountPercentage }}% OFF
+        </span>
+            </div>
+
+            <div class="installments">
+                <i class="fas fa-credit-card"></i>
+                Em até {{ calculateInstallments() }}x de {{ installmentValue | currency:'BRL' }} sem juros
+            </div>
+
+            <div class="description">
+                <h3>Descrição</h3>
+                <p>{{ product.description }}</p>
+            </div>
+
+            <div class="purchase-section">
+                <div class="quantity-selector">
+                    <label>Quantidade:</label>
+                    <div class="quantity-controls">
+                        <button (click)="decrementQuantity()" [disabled]="quantity <= 1">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" [(ngModel)]="quantity" min="1" [max]="product.stockQuantity" readonly>
+                        <button (click)="incrementQuantity()" [disabled]="quantity >= product.stockQuantity">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stock-info" [class.low-stock]="product.stockQuantity <= 5">
+                    <i class="fas fa-box"></i>
+                    {{ product.stockQuantity }} unidades disponíveis
+                </div>
+
+                <button
+                        class="add-to-cart-button"
+                        [disabled]="!product.isInStock"
+                        (click)="addToCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    {{ product.isInStock ? 'Adicionar ao Carrinho' : 'Produto Esgotado' }}
+                </button>
+
+                <button class="buy-now-button" [disabled]="!product.isInStock">
+                    <i class="fas fa-bolt"></i>
+                    Comprar Agora
+                </button>
+            </div>
+
+            <div class="shipping-info">
+                <h3>Calcular Frete</h3>
+                <div class="shipping-calculator">
+                    <input type="text" placeholder="Digite seu CEP">
+                    <button>Calcular</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="error-message" *ngIf="error">
+        <p>{{ error }}</p>
+        <button (click)="goBack()">Voltar aos produtos</button>
+    </div>
+</div>
+
+<ng-template #loadingTemplate>
+    <div class="loading-container">
+        <app-spinner></app-spinner>
+        <p>Carregando produto...</p>
+    </div>
+</ng-template>

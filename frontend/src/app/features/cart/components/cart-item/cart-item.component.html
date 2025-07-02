@@ -1,0 +1,39 @@
+<div class="cart-item">
+  <div class="item-image">
+    <img [src]="item.image" [alt]="item.name">
+  </div>
+
+  <div class="item-details">
+    <h3>{{ item.name }}</h3>
+    <p class="item-price">{{ item.price | currencyBrl }}</p>
+  </div>
+
+  <div class="item-quantity">
+    <button
+      class="quantity-btn"
+      (click)="decrementQuantity()"
+      [disabled]="item.quantity <= 1">
+      <i class="fas fa-minus"></i>
+    </button>
+    <input
+      type="number"
+      [value]="item.quantity"
+      (change)="onQuantityChange($event)"
+      min="1"
+      [max]="item.stockQuantity">
+    <button
+      class="quantity-btn"
+      (click)="incrementQuantity()"
+      [disabled]="item.quantity >= item.stockQuantity">
+      <i class="fas fa-plus"></i>
+    </button>
+  </div>
+
+  <div class="item-total">
+    <p>{{ item.price * item.quantity | currencyBrl }}</p>
+  </div>
+
+  <button class="item-remove" (click)="onRemove()">
+    <i class="fas fa-times"></i>
+  </button>
+</div>

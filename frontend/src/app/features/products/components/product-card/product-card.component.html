@@ -1,0 +1,55 @@
+<!-- 2. product-card.component.html -->
+<!-- src/app/features/products/components/product-card/product-card.component.html -->
+<article class="product-card" [class.out-of-stock]="!product.isInStock">
+    <div class="product-card__image-container" (click)="navigateToDetail()">
+        <img
+                [src]="product.images[0] || 'assets/images/no-image.png'"
+                [alt]="product.name"
+                class="product-card__image"
+                loading="lazy"
+        >
+        <span class="product-card__discount" *ngIf="product.hasDiscount">
+      -{{ product.discountPercentage }}%
+    </span>
+        <button
+                class="product-card__wishlist"
+                (click)="onToggleWishlist(); $event.stopPropagation()"
+                [attr.aria-label]="'Adicionar ' + product.name + ' aos favoritos'">
+            <i class="far fa-heart"></i>
+        </button>
+    </div>
+
+    <div class="product-card__content">
+        <span class="product-card__brand">{{ product.brand }}</span>
+        <h3 class="product-card__title">
+            <a [routerLink]="['/products', product.id]">{{ product.name }}</a>
+        </h3>
+
+        <div class="product-card__price-container">
+      <span class="product-card__price-original" *ngIf="product.originalPrice">
+        {{ product.originalPrice | currency:'BRL' }}
+      </span>
+            <span class="product-card__price">
+        {{ product.price | currency:'BRL' }}
+      </span>
+        </div>
+
+        <div class="product-card__installments">
+            <span>ou {{ calculateInstallments() }}x de {{ installmentValue | currency:'BRL' }} sem juros</span>
+        </div>
+
+        <div class="product-card__stock-info" *ngIf="product.stockQuantity <= 5 && product.isInStock">
+            <i class="fas fa-exclamation-triangle"></i>
+            Restam apenas {{ product.stockQuantity }} unidades!
+        </div>
+
+        <button
+                class="product-card__add-to-cart"
+                [disabled]="!product.isInStock"
+                (click)="onAddToCart(); $event.stopPropagation()"
+                [attr.aria-label]="'Adicionar ' + product.name + ' ao carrinho'">
+            <i class="fas fa-shopping-cart"></i>
+            {{ product.isInStock ? 'Adicionar ao Carrinho' : 'Produto Esgotado' }}
+        </button>
+    </div>
+</article>

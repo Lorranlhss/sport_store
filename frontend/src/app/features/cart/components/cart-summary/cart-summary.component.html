@@ -1,0 +1,27 @@
+<div class="cart-summary">
+  <h2>Resumo do Pedido</h2>
+
+  <div class="summary-row">
+    <span>Subtotal ({{ itemCount }} itens)</span>
+    <span>{{ total | currencyBrl }}</span>
+  </div>
+
+  <div class="summary-row">
+    <span>Frete</span>
+    <span class="text-success">Grátis</span>
+  </div>
+
+  <div class="summary-row total">
+    <span>Total</span>
+    <span>{{ total | currencyBrl }}</span>
+  </div>
+
+  <button class="btn btn-primary btn-block btn-lg" (click)="checkout.emit()">
+    Finalizar Compra
+  </button>
+
+  <div class="security-info">
+    <i class="fas fa-lock"></i>
+    <span>Compra 100% segura</span>
+  </div>
+</div>

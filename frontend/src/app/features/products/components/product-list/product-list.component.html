@@ -1,0 +1,62 @@
+<!-- 1. product-list.component.html -->
+<!-- src/app/features/products/components/product-list/product-list.component.html -->
+<div class="products-container">
+    <div class="products-header">
+        <h1>Produtos Esportivos</h1>
+        <div class="products-actions">
+            <app-search-bar
+                    [value]="searchQuery$ | async"
+                    (search)="onSearch($event)">
+            </app-search-bar>
+            <button class="btn-filter" (click)="toggleFilters()">
+                <i class="fas fa-filter"></i> Filtros
+            </button>
+        </div>
+    </div>
+
+    <div class="products-layout">
+        <app-product-filters
+                *ngIf="showFilters"
+                [filters]="filters$ | async"
+                (filtersChange)="onFiltersChange($event)"
+                (reset)="onResetFilters()">
+        </app-product-filters>
+
+        <div class="products-content">
+            <div class="products-info">
+                <span>{{ (totalElements$ | async) || 0 }} produtos encontrados</span>
+                <select class="sort-select" (change)="onSortChange($event)">
+                    <option value="createdAt,desc">Mais recentes</option>
+                    <option value="price,asc">Menor preço</option>
+                    <option value="price,desc">Maior preço</option>
+                    <option value="name,asc">Nome (A-Z)</option>
+                </select>
+            </div>
+
+            <div class="products-grid" *ngIf="!(loading$ | async); else loadingTemplate">
+                <app-product-card
+                        *ngFor="let product of products$ | async"
+                        [product]="product"
+                        (addToCart)="onAddToCart($event)">
+                </app-product-card>
+            </div>
+
+            <ng-template #loadingTemplate>
+                <div class="loading-spinner">
+                    <app-spinner></app-spinner>
+                </div>
+            </ng-template>
+
+            <div class="error-message" *ngIf="error$ | async as error">
+                <p>Erro ao carregar produtos: {{ error }}</p>
+                <button (click)="retry()">Tentar novamente</button>
+            </div>
+
+            <app-pagination
+                    [currentPage]="(currentPage$ | async)!"
+                    [totalPages]="(totalPages$ | async)!"
+                    (pageChange)="onPageChange($event)">
+            </app-pagination>
+        </div>
+    </div>
+</div>

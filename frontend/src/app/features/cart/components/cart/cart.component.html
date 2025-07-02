@@ -1,0 +1,47 @@
+<div class="cart-container">
+  <div class="cart-header">
+    <h1>Meu Carrinho</h1>
+    <span class="item-count">{{ itemCount$ | async }} itens</span>
+  </div>
+
+  <div class="cart-content" *ngIf="(itemCount$ | async) as itemCount">
+    <div *ngIf="itemCount > 0; else emptyCart" class="cart-layout">
+      <div class="cart-items">
+        <app-cart-item
+          *ngFor="let item of cartItems$ | async"
+          [item]="item"
+          (updateQuantity)="onUpdateQuantity(item, $event)"
+          (remove)="onRemoveItem(item)">
+        </app-cart-item>
+      </div>
+
+      <div class="cart-sidebar">
+        <app-cart-summary
+          [total]="(total$ | async)!"
+          [itemCount]="itemCount"
+          (checkout)="onCheckout()">
+        </app-cart-summary>
+
+        <div class="cart-actions">
+          <button class="btn btn-secondary" (click)="onContinueShopping()">
+            <i class="fas fa-arrow-left"></i> Continuar Comprando
+          </button>
+          <button class="btn btn-outline-danger" (click)="onClearCart()">
+            <i class="fas fa-trash"></i> Limpar Carrinho
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #emptyCart>
+      <div class="empty-cart">
+        <i class="fas fa-shopping-cart"></i>
+        <h2>Seu carrinho está vazio</h2>
+        <p>Adicione produtos ao seu carrinho para continuar</p>
+        <button class="btn btn-primary btn-lg" (click)="onContinueShopping()">
+          Ver Produtos
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>

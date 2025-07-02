@@ -1,0 +1,166 @@
+<!-- src/app/features/checkout/components/checkout/checkout.component.html -->
+<div class="checkout-container">
+  <div class="checkout-header">
+    <h1>Finalizar Compra</h1>
+    <div class="checkout-steps">
+      <div class="step" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+        <span class="step-number">1</span>
+        <span class="step-label">Dados Pessoais</span>
+      </div>
+      <div class="step" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+        <span class="step-number">2</span>
+        <span class="step-label">Endereço</span>
+      </div>
+      <div class="step" [class.active]="currentStep >= 3">
+        <span class="step-number">3</span>
+        <span class="step-label">Pagamento</span>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+    <div class="checkout-content">
+      <div class="checkout-form">
+        <!-- Step 1: Customer Info -->
+        <div *ngIf="currentStep === 1" formGroupName="customer" class="form-step">
+          <h2>Dados Pessoais</h2>
+
+          <div class="form-group">
+            <label>Nome Completo</label>
+            <input type="text" class="form-control" formControlName="name">
+          </div>
+
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" class="form-control" formControlName="email">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Telefone</label>
+              <input type="tel" class="form-control" formControlName="phone">
+            </div>
+            <div class="form-group col-md-6">
+              <label>CPF</label>
+              <input type="text" class="form-control" formControlName="cpf">
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Shipping -->
+        <div *ngIf="currentStep === 2" formGroupName="shipping" class="form-step">
+          <h2>Endereço de Entrega</h2>
+
+          <div class="form-group">
+            <label>CEP</label>
+            <input type="text" class="form-control" formControlName="cep">
+          </div>
+
+          <div class="form-group">
+            <label>Rua</label>
+            <input type="text" class="form-control" formControlName="street">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label>Número</label>
+              <input type="text" class="form-control" formControlName="number">
+            </div>
+            <div class="form-group col-md-8">
+              <label>Complemento</label>
+              <input type="text" class="form-control" formControlName="complement">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Bairro</label>
+            <input type="text" class="form-control" formControlName="neighborhood">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label>Cidade</label>
+              <input type="text" class="form-control" formControlName="city">
+            </div>
+            <div class="form-group col-md-4">
+              <label>Estado</label>
+              <input type="text" class="form-control" formControlName="state">
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Payment -->
+        <div *ngIf="currentStep === 3" formGroupName="payment" class="form-step">
+          <h2>Forma de Pagamento</h2>
+
+          <div class="payment-methods">
+            <label class="payment-method">
+              <input type="radio" formControlName="method" value="credit_card">
+              <span class="method-content">
+                <i class="fas fa-credit-card"></i>
+                Cartão de Crédito
+              </span>
+            </label>
+
+            <label class="payment-method">
+              <input type="radio" formControlName="method" value="pix">
+              <span class="method-content">
+                <i class="fas fa-qrcode"></i>
+                PIX
+              </span>
+            </label>
+
+            <label class="payment-method">
+              <input type="radio" formControlName="method" value="boleto">
+              <span class="method-content">
+                <i class="fas fa-barcode"></i>
+                Boleto
+              </span>
+            </label>
+          </div>
+
+          <app-payment-form
+            *ngIf="checkoutForm.get('payment.method')?.value === 'credit_card'"
+            [parentForm]="checkoutForm.get('payment')">
+          </app-payment-form>
+        </div>
+
+        <div class="form-navigation">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            (click)="previousStep()"
+            *ngIf="currentStep > 1">
+            Voltar
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="nextStep()"
+            *ngIf="currentStep < 3">
+            Próximo
+          </button>
+
+          <button
+            type="submit"
+            class="btn btn-success"
+            *ngIf="currentStep === 3"
+            [disabled]="checkoutForm.invalid || loading">
+            <span *ngIf="!loading">Finalizar Pedido</span>
+            <span *ngIf="loading">
+              <i class="fas fa-spinner fa-spin"></i> Processando...
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <div class="checkout-sidebar">
+        <app-order-summary
+          [items]="(cartItems$ | async)!"
+          [total]="(total$ | async)!">
+        </app-order-summary>
+      </div>
+    </div>
+  </form>
+</div>

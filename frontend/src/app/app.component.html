@@ -1,0 +1,86 @@
+<div class="app-container">
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo">
+        <a routerLink="/">
+          <i class="fas fa-running"></i>
+          <span>Sports Store</span>
+        </a>
+      </div>
+
+      <nav class="main-nav">
+        <ul>
+          <li><a routerLink="/products" routerLinkActive="active">Produtos</a></li>
+          <li><a routerLink="/categories" routerLinkActive="active">Categorias</a></li>
+          <li><a routerLink="/brands" routerLinkActive="active">Marcas</a></li>
+          <li><a routerLink="/offers" routerLinkActive="active">Ofertas</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <button class="search-button">
+          <i class="fas fa-search"></i>
+        </button>
+
+        <button class="user-button">
+          <i class="fas fa-user"></i>
+        </button>
+
+        <button class="cart-button" routerLink="/cart">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-badge">0</span>
+        </button>
+      </div>
+
+      <button class="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="app-main">
+    <router-outlet></router-outlet>
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Sobre a Sports Store</h3>
+        <p>A melhor loja de artigos esportivos com produtos de qualidade e preços imbatíveis.</p>
+      </div>
+
+      <div class="footer-section">
+        <h3>Links Úteis</h3>
+        <ul>
+          <li><a href="#">Sobre Nós</a></li>
+          <li><a href="#">Política de Privacidade</a></li>
+          <li><a href="#">Termos de Uso</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h3>Contato</h3>
+        <p><i class="fas fa-envelope"></i> contato@sportsstore.com</p>
+        <p><i class="fas fa-phone"></i> (11) 1234-5678</p>
+      </div>
+
+      <div class="footer-section">
+        <h3>Redes Sociais</h3>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2024 Sports Store. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+</div>
