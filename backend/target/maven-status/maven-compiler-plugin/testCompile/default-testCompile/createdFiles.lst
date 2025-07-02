@@ -1,0 +1,3 @@
+com/sportsstore/domain/entity/ProductTest.class
+com/sportsstore/application/usecase/CreateProductUseCaseTest.class
+com/sportsstore/infrastructure/persistence/ProductRepositoryIntegrationTest.class
