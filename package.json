@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@ngrx/store-devtools": "^16.0.0"
+  }
+}
