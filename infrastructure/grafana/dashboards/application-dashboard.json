@@ -1,0 +1,62 @@
+# infrastructure/grafana/dashboards/application-dashboard.json
+{
+"dashboard": {
+"title": "Sports Store Application Dashboard",
+"panels": [
+{
+"title": "Request Rate",
+"targets": [
+{
+"expr": "sum(rate(http_server_requests_seconds_count[5m])) by (method, uri)"
+}
+],
+"type": "graph"
+},
+{
+"title": "Response Time (95th percentile)",
+"targets": [
+{
+"expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket[5m])) by (le, uri))"
+}
+],
+"type": "graph"
+},
+{
+"title": "Error Rate",
+"targets": [
+{
+"expr": "sum(rate(http_server_requests_seconds_count{status=~\"5..\"}[5m]))"
+}
+],
+"type": "graph"
+},
+{
+"title": "JVM Memory Usage",
+"targets": [
+{
+"expr": "jvm_memory_used_bytes{area=\"heap\"} / 1024 / 1024"
+}
+],
+"type": "graph"
+},
+{
+"title": "Database Connections",
+"targets": [
+{
+"expr": "hikaricp_connections_active"
+}
+],
+"type": "graph"
+},
+{
+"title": "Cache Hit Rate",
+"targets": [
+{
+"expr": "rate(cache_gets_total[5m]) - rate(cache_misses_total[5m]) / rate(cache_gets_total[5m]) * 100"
+}
+],
+"type": "gauge"
+}
+]
+}
+}
